@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku</title>
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #0080ff, #00bfff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+
+        #sudoku-board {
+            display: grid;
+            grid-template-columns: repeat(9, 50px);
+            grid-gap: 2px;
+        }
+
+        .cell {
+            width: 50px;
+            height: 50px;
+            border: 2px solid white;
+            text-align: center;
+            line-height: 50px;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+
+        .given {
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .cell:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div id="sudoku-board"></div>
+
+<script>
+    // JavaScript for the Sudoku game
+
+    // Sudoku board representation (0 represents an empty cell)
+    const sudokuBoard = [
+        [5, 3, 0, 0, 7, 0, 0, 0, 0],
+        [6, 0, 0, 1, 9, 5, 0, 0, 0],
+        [0, 9, 8, 0, 0, 0, 0, 6, 0],
+        [8, 0, 0, 0, 6, 0, 0, 0, 3],
+        [4, 0, 0, 8, 0, 3, 0, 0, 1],
+        [7, 0, 0, 0, 2, 0, 0, 0, 6],
+        [0, 6, 0, 0, 0, 0, 2, 8, 0],
+        [0, 0, 0, 4, 1, 9, 0, 0, 5],
+        [0, 0, 0, 0, 8, 0, 0, 7, 9]
+    ];
+
+    // Reference to the HTML Sudoku board element
+    const sudokuBoardElement = document.getElementById('sudoku-board');
+
+    // Function to render the Sudoku board
+    function renderSudokuBoard() {
+        sudokuBoardElement.innerHTML = '';
+        for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < 9; j++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.textContent = sudokuBoard[i][j] !== 0 ? sudokuBoard[i][j] : '';
+                if (sudokuBoard[i][j] !== 0) {
+                    cell.classList.add('given');
+                }
+                cell.addEventListener('click', () => handleClick(i, j));
+                sudokuBoardElement.appendChild(cell);
+            }
+        }
+    }
+
+    // Function to handle a cell click
+    function handleClick(row, col) {
+        const newValue = prompt('Enter a number (1-9) for this cell:', '');
+        if (isValidInput(newValue)) {
+            sudokuBoard[row][col] = parseInt(newValue, 10);
+            renderSudokuBoard();
+        } else {
+            alert('Invalid input. Please enter a number between 1 and 9.');
+        }
+    }
+
+    // Function to check if the input is a valid number between 1 and 9
+    function isValidInput(value) {
+        const parsedValue = parseInt(value, 10);
+        return !isNaN(parsedValue) && parsedValue >= 1 && parsedValue <= 9;
+    }
+
+    // Initial rendering of the Sudoku board
+    renderSudokuBoard();
+</script>
+
+</body>
+</html>
